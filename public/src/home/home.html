@@ -1,0 +1,7 @@
+<div id="home-css-inject">
+    <h1>Vennligst velg ditt resultat for å komme til registrering</h1>
+	<ul>
+        <li ng-repeat="result in vm.results track by $index"><a ui-sref="register({id:$index})">{{result}}</a></li>
+    </ul>
+
+</div>
