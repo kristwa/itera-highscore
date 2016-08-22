@@ -8,7 +8,8 @@ angular.module('iteraHighscoreApp', [
     'app.register',
     'ngWebSocket',
     'ui.router',
-    'uuid4'
+    'uuid4',
+    'LocalStorageModule'
 ])
 .config(function($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
     $urlRouterProvider.otherwise("/home");
@@ -24,6 +25,9 @@ angular.module('iteraHighscoreApp', [
             url: "/register/:id",
             template: "<register></register>"
         })
+})
+.config(function(localStorageServiceProvider: angular.local.storage.ILocalStorageServiceProvider) {
+    localStorageServiceProvider.setPrefix('itera');
 });
 
 // your app setup here

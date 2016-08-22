@@ -6,7 +6,9 @@
     "angular": "~1.5.8",
     "angular-websocket": "~2.0.0",
     "angular-ui-router": "ui-router#^0.3.1",
-    "angular-uuid4": "^0.3.1"
+    "angular-uuid4": "^0.3.1",
+    "lodash": "^4.15.0",
+    "angular-local-storage": "^0.4.0"
   },
   "overrides": {
     "bootstrap": {
@@ -25,6 +27,11 @@
     "font-awesome": {
       "main": [
         "css/font-awesome.css"
+      ]
+    },
+    "lodash": {
+      "main": [
+        "dist/lodash.js"
       ]
     }
   }

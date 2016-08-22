@@ -9,12 +9,15 @@ module app.home {
     export interface IHomeCtrl {}
     export class HomeCtrl implements IHomeCtrl {
         results: Array<string>;
+        highscores: Array<app.services.HighscoreEntry>;
 
         constructor(
             public $scope: ng.IScope,
-            private websocketService: app.services.IWebsocketService
+            private websocketService: app.services.IWebsocketService,
+            private highscoreService: app.services.IHighscoreService
         ){
             this.results = websocketService.results;
+            this.highscores = highscoreService.highscores;
         }
     }
 

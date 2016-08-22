@@ -8,7 +8,7 @@ module app.services {
         results: Array<string>;
         isConnected: boolean;
 
-        registerHighScore(entry: HighscoreEntry);
+        registerHighScore(entry: HighscoreEntry, index: number): void;
     }
 
     
@@ -16,8 +16,8 @@ module app.services {
         isConnected: boolean = false;
         results: Array<string>;
         ws: angular.websocket.IWebSocket;
-
-        constructor(private $websocket: angular.websocket.IWebSocket){
+        
+        constructor(private $websocket: angular.websocket.IWebSocket, private uuid4: any, private highscoreService: app.services.IHighscoreService){
             this.results = [];
             this.ws = $websocket("ws://localhost:8080");
            
@@ -35,51 +35,83 @@ module app.services {
                 console.log("connection error");
             });
             this.ws.onMessage((msg: any) => {
-                if (msg.data) {
-                    var tmp = JSON.parse(msg.data);
-                    this.results.push(tmp.finishedWithTime);
+                if ( msg.data) {
+                    var op = JSON.parse(msg.data);
+
+                    if (op.finishedWithTime) {
+                        this.results.push(op.finishedWithTime); 
+                    }
                 }
                 console.log(msg); 
             });
         }
 
-        registerHighScore(entry: HighscoreEntry) {
-            this.ws.send(JSON.stringify(entry));
-        }
+        registerHighScore(entry: HighscoreEntry, index: number) {
+            var object = new SocketHighscoreEntry();
+            object.registerUser = JSON.stringify(entry);
+            console.log(this.uuid4.generate());
+            this.ws.send(JSON.stringify(object));
 
-    }
-
-    export interface ILocalStorageService {
-        storeHighscoreEntry(entry: HighscoreEntry);
-    }
-
-    export class LocalStorageService implements ILocalStorageService {
-        getExcited: string = "false";
-
-        constructor(){
+            // send to local storage
+            this.highscoreService.storeHighscoreEntry(entry);
             
+            // remove item from array, as it is now registered
+            _.pullAt(this.results, index);
+            console.log("pulled index:" + index + ", new array: " + this.results);
         }
-        
+
+    }
+
+    export interface IHighscoreService {
+        highscores: Array<HighscoreEntry>;
+        storeHighscoreEntry(entry: HighscoreEntry): void;
+    }
+
+    export class HighscoreService implements IHighscoreService  {
+        getExcited: string = "false";
+        highscores: Array<HighscoreEntry>;
+
+        constructor(private localStorageService: angular.local.storage.ILocalStorageService){
+            this.fetchHighscores();
+        }
+
+        fetchHighscores() {
+            var storageHighscores = this.localStorageService.get<Array<HighscoreEntry>>("highscores");
+            if (storageHighscores) {
+                this.highscores = storageHighscores;
+            } else {
+                console.log('nothing in storage:' + storageHighscores);
+                this.highscores = [];
+            }
+        }
+
+        setHighscores() {
+            this.localStorageService.set<Array<HighscoreEntry>>("highscores", this.highscores);
+        }
+
         storeHighscoreEntry(entry: HighscoreEntry) {
+            this.highscores.push(entry);
+            this.highscores = _.sortBy(this.highscores, ['time']);
+            this.setHighscores();
 
         }
         
     }
 
     angular
-        .module('app.services', ['ngWebSocket', 'uuid4'])
+        .module('app.services', ['ngWebSocket', 'uuid4', 'LocalStorageModule'])
         .service("websocketService", WebsocketService)
-        .service("localStorageService", LocalStorageService);
+        .service("highscoreService", HighscoreService);
     
     export class HighscoreEntry {
-
-
         time: number;
         name: string;
         email: string;
-        uuid: string;
+        uuid: string;        
+    }
 
-        
+    export class SocketHighscoreEntry {
+        registerUser: string;
     }
 
 

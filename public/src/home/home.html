@@ -1,7 +1,17 @@
 <div id="home-css-inject">
-    <h1>Vennligst velg ditt resultat for å komme til registrering</h1>
-	<ul>
+    <h2>Vennligst bekreft ditt resultat nedenfor for å komme til registrering</h2>
+	<!--<ul>
         <li ng-repeat="result in vm.results track by $index"><a ui-sref="register({id:$index})">{{result}}</a></li>
-    </ul>
+    </ul>-->
+    <div class="list-group">
+        <a ui-sref="register({id:$index})" class="list-group-item" ng-repeat="result in vm.results track by $index">
+            {{result}}
+        </a>
+    </div>
+
+    <h2>Highscores</h2>
+    <ol>
+        <li ng-repeat="hs in vm.highscores">{{ hs.name}}: {{hs.time}}</li>
+    </ol>
 
 </div>

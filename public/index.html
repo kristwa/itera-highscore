@@ -17,7 +17,7 @@
 			padding-top: 50px;
 		}
 		.starter-template {
-			padding: 40px 15px;
+			padding: 10px 15px 40px 15px;
 			text-align: center;
 		}
 	</style>
@@ -30,12 +30,21 @@
 <body>
 
 <div class="container">
-	<img src="img/logo.svg" class="logo" />
-	<div class="starter-template">
+	<div class="row">
+		<div class="col-md-2">
+			<img src="img/logo.svg" class="logo" />
+		</div>
+		<div class="col-md-10">
+			<div class="starter-template">
 
-		<div ui-view></div>
+				<div ui-view></div>	
+		
 
+			</div>
+		</div>
 	</div>
+	
+	
 
 </div>
 
@@ -45,6 +54,9 @@
 	<script src="lib/angular/angular.js"></script>
 	<script src="lib/angular-websocket/dist/angular-websocket.js"></script>
 	<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="lib/angular-uuid4/angular-uuid4.js"></script>
+	<script src="lib/lodash/dist/lodash.js"></script>
+	<script src="lib/angular-local-storage/dist/angular-local-storage.js"></script>
 	<!-- endbower -->
 
 	<!-- inject:js -->

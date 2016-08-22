@@ -25,7 +25,7 @@ module app.register {
         submit() {
             console.log("Form submitted");
             console.log(this.entry);
-            this.websocketService.registerHighScore(this.entry);            
+            this.websocketService.registerHighScore(this.entry, parseInt(this.$stateParams.id));            
         }
     }
 
