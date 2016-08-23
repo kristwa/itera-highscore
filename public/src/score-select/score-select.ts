@@ -19,7 +19,7 @@ module app.scoreselect {
         }
 
         displayTime(milliseconds: string): string {
-            return this.timeService.getTimeForMilliseconds(parseInt(milliseconds));
+            return this.timeService.getTimeForMilliseconds(milliseconds);
         }
 
         removeItem(index: number): void {
