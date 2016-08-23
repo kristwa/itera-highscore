@@ -1,0 +1,22 @@
+<div id="highscore-css-inject">
+    
+    <h2>Highscore</h2>
+    
+    <a ui-sref="scoreselect" class="btn btn-danger">Registrer ny score</a>
+    
+    <table class="table table-striped" style="margin-top:30px;">
+        <tr>
+            <th>#</th>
+            <th>Navn</th>
+            <th>Tid</th>
+        </tr>
+        <tr ng-repeat="hs in vm.highscores track by $index | limitTo: 25">
+            <td>{{$index+1}}</td>
+            <td>{{hs.name}}</td>
+            <td>{{hs.time}}</td>
+        </tr>
+    </table>
+    
+
+
+</div>

@@ -4,21 +4,27 @@ angular.module('iteraHighscoreApp', [
     'app.demo',
     'app.services',
     'app.templates',
-    'app.home',
+    'app.scoreselect',
     'app.register',
+    'app.highscore',
     'ngWebSocket',
     'ui.router',
     'uuid4',
     'LocalStorageModule'
 ])
 .config(function($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
-    $urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/highscore");
 
     $stateProvider
 
-        .state("home", {
-            url: "/home",
-            template: "<home></home>"
+        .state("highscore", {
+            url: "/highscore",
+            template: "<highscore></highscore>"
+        })
+
+        .state("scoreselect", {
+            url: "/scoreselect",
+            template: "<score-select></score-select>"
         })
 
         .state("register", {

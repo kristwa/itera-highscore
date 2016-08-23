@@ -14,9 +14,9 @@ module app.register {
         constructor(
             public $scope: ng.IScope,
             private websocketService: app.services.IWebsocketService,
-            private $stateParams: RegisterStateParams
+            private $stateParams: RegisterStateParams,
+            private $state: ng.ui.IState
         ){
-
             this.result = websocketService.results[$stateParams.id];
             this.entry = new app.services.HighscoreEntry();
             this.entry.time = parseInt(this.result);
@@ -25,13 +25,14 @@ module app.register {
         submit() {
             console.log("Form submitted");
             console.log(this.entry);
-            this.websocketService.registerHighScore(this.entry, parseInt(this.$stateParams.id));            
+            this.websocketService.registerHighScore(this.entry, parseInt(this.$stateParams.id));
+            this.$state.go("highscore", {});            
         }
     }
 
 
     angular
-        .module('app.register', ['app.services'])
+        .module('app.register', ['app.services', 'ui.router'])
         .component("register", {
             templateUrl: 'app-templates/register/register.html',
             controller:  RegisterCtrl,
