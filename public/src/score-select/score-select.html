@@ -4,9 +4,10 @@
         <li ng-repeat="result in vm.results track by $index"><a ui-sref="register({id:$index})">{{result}}</a></li>
     </ul>-->
     <div class="list-group">
-        <a ui-sref="register({id:$index})" class="list-group-item" ng-repeat="result in vm.results track by $index">
-            {{result}}
-        </a>
+        <li class="list-group-item" ng-repeat="result in vm.results track by $index">
+            <a ui-sref="register({id:$index})">{{vm.displayTime(result)}}</a>
+            <a ng-click="vm.removeItem($index)" class="btn btn-sm btn-danger pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+        </li>
     </div>
 
 </div>

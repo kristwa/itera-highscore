@@ -7,6 +7,7 @@ angular.module('iteraHighscoreApp', [
     'app.scoreselect',
     'app.register',
     'app.highscore',
+    'app.admin',
     'ngWebSocket',
     'ui.router',
     'uuid4',
@@ -30,6 +31,11 @@ angular.module('iteraHighscoreApp', [
         .state("register", {
             url: "/register/:id",
             template: "<register></register>"
+        })
+
+        .state("admin", {
+            url: "/admin",
+            template: "<admin></admin>"
         })
 })
 .config(function(localStorageServiceProvider: angular.local.storage.ILocalStorageServiceProvider) {

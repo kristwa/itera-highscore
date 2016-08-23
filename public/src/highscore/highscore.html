@@ -13,7 +13,7 @@
         <tr ng-repeat="hs in vm.highscores track by $index | limitTo: 25">
             <td>{{$index+1}}</td>
             <td>{{hs.name}}</td>
-            <td>{{hs.time}}</td>
+            <td>{{vm.timeService.getTimeForMilliseconds(hs.time)}}</td>
         </tr>
     </table>
     

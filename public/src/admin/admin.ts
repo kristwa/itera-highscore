@@ -8,16 +8,26 @@ module app.admin {
 
     export interface IAdminCtrl {}
     export class AdminCtrl implements IAdminCtrl {
-        results: Array<string>;
-        highscores: Array<app.services.HighscoreEntry>;
 
+        superSecretPwd = "1234";
+        pwd: string;
+        pwdError = false;
+        isAuthenticated = false;
+        
         constructor(
-            public $scope: ng.IScope,
-            private websocketService: app.services.IWebsocketService,
-            private highscoreService: app.services.IHighscoreService
+            public $scope: ng.IScope
         ){
-            this.results = websocketService.results;
-            this.highscores = highscoreService.highscores;
+            
+        }
+
+        auth() {
+            if (this.pwd === this.superSecretPwd) {
+                this.isAuthenticated = true;
+            }
+            else {
+                this.pwdError = true;
+                this.isAuthenticated = false;
+            }
         }
     }
 

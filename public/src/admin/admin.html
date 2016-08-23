@@ -1,0 +1,14 @@
+<div ng-show="vm.isAuthenticated">
+    <h2>Administrator</h2>
+    <p>Superhemmelige administratorfunksjoner</p>
+</div>
+<div ng-show="!vm.isAuthenticated">
+    <form ng-submit="vm.auth()">
+        <div class="form-group">
+            <label>Passord</label>
+            <input type="password" class="form-control" ng-model="vm.pwd" />
+        </div>
+        <button type="submit" class="btn btn-danger">Gå til administrasjonsside</button>
+        <span style="color:red" ng-if="vm.pwdError">Fy! Feil passord</span>
+    </form>
+</div>

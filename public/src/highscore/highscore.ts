@@ -13,7 +13,8 @@ module app.highscore {
 
         constructor(
             public $scope: ng.IScope,
-            private highscoreService: app.services.IHighscoreService
+            private highscoreService: app.services.IHighscoreService,
+            public timeService: app.services.ITimeService
         ){
             this.highscores = highscoreService.highscores;
         }

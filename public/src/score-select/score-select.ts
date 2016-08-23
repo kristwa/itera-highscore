@@ -12,9 +12,18 @@ module app.scoreselect {
 
         constructor(
             public $scope: ng.IScope,
-            private websocketService: app.services.IWebsocketService
+            private websocketService: app.services.IWebsocketService,
+            private timeService: app.services.ITimeService
         ){
             this.results = websocketService.results;
+        }
+
+        displayTime(milliseconds: string): string {
+            return this.timeService.getTimeForMilliseconds(parseInt(milliseconds));
+        }
+
+        removeItem(index: number): void {
+            this.websocketService.removeItem(index);
         }
     }
 
