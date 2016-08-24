@@ -15,7 +15,8 @@ module app.admin {
         isAuthenticated = false;
         
         constructor(
-            public $scope: ng.IScope
+            public $scope: ng.IScope,
+            private $state: ng.ui.IState
         ){
             
         }
@@ -28,6 +29,10 @@ module app.admin {
                 this.pwdError = true;
                 this.isAuthenticated = false;
             }
+        }
+
+        goTo(state: string) {
+            this.$state.go(state);
         }
     }
 

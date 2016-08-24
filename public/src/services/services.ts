@@ -70,6 +70,11 @@ module app.services {
             this.removeItem(index);
         }
 
+        sendCommand(command: string): void {
+
+            this.ws.send(JSON.stringify(command));
+        }
+
         removeItem(index: number): void {
             _.pullAt(this.results, index);
             this.localStorageService.set<Array<string>>("unregistered-scores", this.results);

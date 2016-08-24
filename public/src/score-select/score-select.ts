@@ -13,9 +13,14 @@ module app.scoreselect {
         constructor(
             public $scope: ng.IScope,
             private websocketService: app.services.IWebsocketService,
-            private timeService: app.services.ITimeService
+            private timeService: app.services.ITimeService,
+            private $state: ng.ui.IState
         ){
             this.results = websocketService.results;
+
+            if (this.results.length === 1) {
+                this.$state.go("register", {id: 0});
+            }
         }
 
         displayTime(milliseconds: string): string {

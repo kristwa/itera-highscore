@@ -1,10 +1,10 @@
 /// <reference path="../../../typings/index.d.ts" />
 
 angular.module('iteraHighscoreApp', [
-    'app.demo',
     'app.services',
     'app.templates',
     'app.scoreselect',
+    'app.winnerselection',
     'app.register',
     'app.highscore',
     'app.admin',
@@ -36,6 +36,11 @@ angular.module('iteraHighscoreApp', [
         .state("admin", {
             url: "/admin",
             template: "<admin></admin>"
+        })
+
+        .state("winner", {
+            url: "/winnerselection",
+            template: "<winner-selection><winner-selection>"
         })
 })
 .config(function(localStorageServiceProvider: angular.local.storage.ILocalStorageServiceProvider) {

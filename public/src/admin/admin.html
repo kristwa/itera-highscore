@@ -1,6 +1,21 @@
 <div ng-show="vm.isAuthenticated">
     <h2>Administrator</h2>
     <p>Superhemmelige administratorfunksjoner</p>
+    <div class="well well-lg">
+        <p>Robot</p>
+        <button class="btn btn-danger">Kalibrer</button>
+    </div>
+    <div class="well well-lg">
+        <p>Pi ops</p>
+        <button class="btn btn-danger">Reboot</button>
+        <button class="btn btn-danger">Shutdown</button>
+    </div>
+    <div class="well well-lg">
+        <p>Administrativt</p>
+        <button class="btn btn-danger" ng-click="vm.goTo('winner')">Foreta trekning</button> 
+        <button class="btn btn-danger">Erstatt lokal highscoreliste med liste fra DB</button>
+        <button class="btn btn-danger">Tøm highscoreliste db</button>
+    </div>
 </div>
 <div ng-show="!vm.isAuthenticated">
     <form ng-submit="vm.auth()">
