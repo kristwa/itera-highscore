@@ -29,7 +29,7 @@ module app.services {
         }
 
         setupWebsocket() {
-            this.ws = this.$websocket("ws://localhost:8080");
+            this.ws = this.$websocket("ws://192.168.1.2:8080");
            
             this.ws.onOpen(() => {
                 this.isConnected = true;
