@@ -30,7 +30,7 @@ module app.services {
         }
 
         setupWebsocket() {
-            this.ws = this.$websocket("ws://192.168.1.2:8080");
+            this.ws = this.$websocket("ws://192.168.1.2:8080"); // this.$websocket("ws://localhost:8080");  // 
            
             this.ws.onOpen(() => {
                 this.isConnected = true;
@@ -123,6 +123,7 @@ module app.services {
 
     export interface ITimeService {
         getTimeForMilliseconds(milsec: string): string;
+        getMillisecondsFromSeconds(seconds: number)
     }
 
     export class TimeService implements ITimeService {
@@ -131,6 +132,10 @@ module app.services {
             var min = (ms/1000/60) << 0;
             var sec = (ms/1000) % 60;
             return min + " minutter, " + parseInt(sec + "") + " sekunder";
+        }
+
+        getMillisecondsFromSeconds(seconds: number) {
+            return seconds*1000;
         }
     }
 

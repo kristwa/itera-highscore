@@ -30,6 +30,10 @@ module app.scoreselect {
         removeItem(index: number): void {
             this.websocketService.removeItem(index);
         }
+
+        registerCustom() {
+            this.$state.go("register", {id: -1});
+        }
     }
 
 

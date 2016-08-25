@@ -11,7 +11,9 @@ angular.module('iteraHighscoreApp', [
     'ngWebSocket',
     'ui.router',
     'uuid4',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'ngAnimate',
+    'toastr'
 ])
 .config(function($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider) {
     $urlRouterProvider.otherwise("/highscore");

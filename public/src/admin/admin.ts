@@ -18,7 +18,8 @@ module app.admin {
             public $scope: ng.IScope,
             private $state: ng.ui.IState,
             private websocketService: app.services.WebsocketService,
-            private $window: ng.IWindowService
+            private $window: ng.IWindowService,
+            private toastr: any
         ){
             
         }
@@ -39,6 +40,7 @@ module app.admin {
 
         sendCmd(cmd: string) {
             this.websocketService.sendCommand(cmd);
+            this.toastr.info("Kommando: '" + cmd + "' sendt");
         }
 
         confirm(cmd: string) {
