@@ -10,6 +10,7 @@ module app.services {
 
         registerHighScore(entry: HighscoreEntry, index: number): void;
         removeItem(index: number): void;
+        sendCommand(command: string): void;
     }
 
     
@@ -71,8 +72,9 @@ module app.services {
         }
 
         sendCommand(command: string): void {
-
-            this.ws.send(JSON.stringify(command));
+            var stringify = JSON.stringify(new StandardCommand(command));
+            this.ws.send(stringify);
+            console.log('Websocket command sent: ', stringify);
         }
 
         removeItem(index: number): void {
@@ -141,12 +143,19 @@ module app.services {
     export class HighscoreEntry {
         time: number;
         name: string;
-        email: string;
-        uuid: string;        
+        email: string;       
     }
 
     export class SocketHighscoreEntry {
         registerUser: string;
+    }
+
+    export class StandardCommand {
+        command: string;
+        constructor(command: string) {
+            this.command = command;
+        }
+
     }
 
 

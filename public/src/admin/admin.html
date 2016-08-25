@@ -3,18 +3,22 @@
     <p>Superhemmelige administratorfunksjoner</p>
     <div class="well well-lg">
         <p>Robot</p>
-        <button class="btn btn-danger">Kalibrer</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('start')">Start motor</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('stop')">Stopp motor</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('calibrate')">Kalibrer</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('shutdown-robot')">Shutdown robot</button>
+
     </div>
     <div class="well well-lg">
         <p>Pi ops</p>
-        <button class="btn btn-danger">Reboot</button>
-        <button class="btn btn-danger">Shutdown</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('reboot')">Reboot</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('shutdown')">Shutdown</button>
     </div>
     <div class="well well-lg">
         <p>Administrativt</p>
         <button class="btn btn-danger" ng-click="vm.goTo('winner')">Foreta trekning</button> 
         <button class="btn btn-danger">Erstatt lokal highscoreliste med liste fra DB</button>
-        <button class="btn btn-danger">Tøm highscoreliste db</button>
+        <button class="btn btn-danger" ng-click="vm.confirm('truncate')">Tøm highscoreliste db</button>
     </div>
 </div>
 <div ng-show="!vm.isAuthenticated">

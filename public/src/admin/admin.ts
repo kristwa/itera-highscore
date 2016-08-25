@@ -16,7 +16,9 @@ module app.admin {
         
         constructor(
             public $scope: ng.IScope,
-            private $state: ng.ui.IState
+            private $state: ng.ui.IState,
+            private websocketService: app.services.WebsocketService,
+            private $window: ng.IWindowService
         ){
             
         }
@@ -33,6 +35,17 @@ module app.admin {
 
         goTo(state: string) {
             this.$state.go(state);
+        }
+
+        sendCmd(cmd: string) {
+            this.websocketService.sendCommand(cmd);
+        }
+
+        confirm(cmd: string) {
+            if (this.$window.confirm("Er du sikker på at du ønsker å utføre denne operasjonen?")) {
+                console.log('Permission given: ', cmd);
+                this.sendCmd(cmd);
+            }
         }
     }
 
