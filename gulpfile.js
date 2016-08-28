@@ -16,6 +16,8 @@ var path          = require('path');
 var wiredep       = require('wiredep').stream;
 var _             = require('underscore');
 
+var tsProject = ts.createProject('tsconfig.json');
+
 // Lint to keep us in line
 gulp.task('lint', function() {
 	return gulp.src('public/src/**/*.ts')
@@ -26,7 +28,8 @@ gulp.task('lint', function() {
 // Concatenate & minify JS
 gulp.task('scripts', function() {
 
-	return gulp.src('public/src/**/*.ts')
+	return tsProject
+	    .src('public/src/**/*.ts')
 		.pipe(addStream.obj(prepareTemplates()))
 		.pipe(sourceMaps.init())
 		.pipe(ts({

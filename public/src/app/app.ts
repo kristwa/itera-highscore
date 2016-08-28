@@ -1,4 +1,10 @@
 /// <reference path="../../../typings/index.d.ts" />
+import '../services/services';
+import '../admin/admin';
+import '../highscore/highscore';
+import '../register/register';
+import '../winner-selection/winner-selection';
+import '../score-select/score-select';
 
 angular.module('iteraHighscoreApp', [
     'app.services',
