@@ -8,11 +8,11 @@
         </div>
         <div class="form-group">
             <label for="name">Ditt navn</label>
-            <input type="text" class="form-control" ng-model="vm.entry.name" id="name" placeholder="Navn">
+            <input type="text" class="form-control" ng-model="vm.entry.name" id="name" placeholder="Navn" required>
         </div>
         <div class="form-group">
             <label for="email">Din epostadresse</label>
-            <input type="email" class="form-control" ng-model="vm.entry.email" id="email" placeholder="Epostadresse">
+            <input type="email" class="form-control" ng-model="vm.entry.email" id="email" placeholder="Epostadresse" required>
         </div>
         <button type="submit" class="btn btn-danger">Registrer</button>
         <a ui-sref="highscore" class="btn btn-link">Gå tilbake</a>

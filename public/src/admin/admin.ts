@@ -43,8 +43,8 @@ module app.admin {
             this.toastr.info("Kommando: '" + cmd + "' sendt");
         }
 
-        confirm(cmd: string) {
-            if (this.$window.confirm("Er du sikker på at du ønsker å utføre denne operasjonen?")) {
+        confirm(cmd: string, warning: string) {
+            if (this.$window.confirm("Er du sikker på at du ønsker å utføre denne operasjonen? " + warning)) {
                 console.log('Permission given: ', cmd);
                 this.sendCmd(cmd);
             }

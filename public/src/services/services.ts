@@ -23,23 +23,31 @@ module app.services {
             private $websocket: angular.websocket.IWebSocket, 
             private uuid4: any, 
             private highscoreService: app.services.IHighscoreService,
-            private localStorageService: angular.local.storage.ILocalStorageService)
+            private localStorageService: angular.local.storage.ILocalStorageService,
+            private $timeout: angular.ITimeoutService,
+            private toastr: any)
         {
             this.results = this.localStorageService.get<Array<string>>('unregistered-scores') || [];
             this.setupWebsocket();
         }
 
         setupWebsocket() {
-            this.ws = this.$websocket("ws://192.168.1.2:8080"); // this.$websocket("ws://localhost:8080");  // 
+            this.ws =  this.$websocket("ws://localhost:8080");  // this.$websocket("ws://192.168.1.2:8080"); //
            
             this.ws.onOpen(() => {
+                this.toastr.success("Kontakt med websocket opprettet!");
                 this.isConnected = true;
                 console.log("connection opened")
             });
 
             this.ws.onClose(() => {
+                this.toastr.error("Kontakt med websocket lukket. Prøver å opprette ny tilkobling.");
                 this.isConnected = false;
                 console.log("connection closed");
+
+                this.$timeout(() => {
+                    this.setupWebsocket();
+                }, 3000);
             });
             this.ws.onError(() => {
                 this.isConnected = false;
@@ -52,6 +60,8 @@ module app.services {
                     if (op.finishedWithTime) {
                         this.results.push(op.finishedWithTime); 
                         this.localStorageService.set<Array<string>>("unregistered-scores", this.results);
+                    } else if (op.highscore) {
+                        this.highscoreService.resyncLocalHighscore(op.highscore);
                     }
                 }
                 console.log(msg); 
@@ -88,6 +98,7 @@ module app.services {
     export interface IHighscoreService {
         highscores: Array<HighscoreEntry>;
         storeHighscoreEntry(entry: HighscoreEntry): void;
+        resyncLocalHighscore(entries: Array<HighscoreEntry>);
     }
 
     export class HighscoreService implements IHighscoreService  {
@@ -98,7 +109,19 @@ module app.services {
             this.fetchHighscores();
         }
 
-        fetchHighscores() {
+        resyncLocalHighscore(entries: Array<HighscoreEntry>): void {
+            this.highscores = this.sortEntries(entries);
+            this.setHighscores();
+        }
+
+        storeHighscoreEntry(entry: HighscoreEntry): void {
+            this.highscores.push(entry);
+            this.highscores = this.sortEntries(this.highscores);
+            this.setHighscores();
+
+        }
+
+        private fetchHighscores() {
             var storageHighscores = this.localStorageService.get<Array<HighscoreEntry>>("highscores");
             if (storageHighscores) {
                 this.highscores = storageHighscores;
@@ -108,15 +131,13 @@ module app.services {
             }
         }
 
-        setHighscores() {
+
+        private setHighscores() {
             this.localStorageService.set<Array<HighscoreEntry>>("highscores", this.highscores);
         }
 
-        storeHighscoreEntry(entry: HighscoreEntry) {
-            this.highscores.push(entry);
-            this.highscores = _.sortBy(this.highscores, ['time']);
-            this.setHighscores();
-
+        private sortEntries(entries: Array<HighscoreEntry>) {
+            return _.sortBy(this.highscores, ['time']);
         }
         
     }
