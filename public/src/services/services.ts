@@ -8,7 +8,7 @@ module app.services {
         results: Array<string>;
         isConnected: boolean;
 
-        registerHighScore(entry: HighscoreEntry, index: number): void;
+        registerHighScore(entry: HighscoreEntry, index: number): number;
         removeItem(index: number): void;
         sendCommand(command: string): void;
     }
@@ -75,10 +75,12 @@ module app.services {
             this.ws.send(JSON.stringify(object));
 
             // send to local storage
-            this.highscoreService.storeHighscoreEntry(entry);
+            var placement = this.highscoreService.storeHighscoreEntry(entry);
             
             // remove item from array and restore in local storage, as it is now registered
             this.removeItem(index);
+
+            return placement;
         }
 
         sendCommand(command: string): void {
@@ -97,7 +99,7 @@ module app.services {
 
     export interface IHighscoreService {
         highscores: Array<HighscoreEntry>;
-        storeHighscoreEntry(entry: HighscoreEntry): void;
+        storeHighscoreEntry(entry: HighscoreEntry): number;
         resyncLocalHighscore(entries: Array<HighscoreEntry>);
     }
 
@@ -114,11 +116,11 @@ module app.services {
             this.setHighscores();
         }
 
-        storeHighscoreEntry(entry: HighscoreEntry): void {
+        storeHighscoreEntry(entry: HighscoreEntry): number {
             this.highscores.push(entry);
             this.highscores = this.sortEntries(this.highscores);
             this.setHighscores();
-
+            return this.findEntryIndex(entry.name, entry.time);
         }
 
         private fetchHighscores() {
@@ -138,6 +140,10 @@ module app.services {
 
         private sortEntries(entries: Array<HighscoreEntry>) {
             return _.sortBy(this.highscores, ['time']);
+        }
+
+        private findEntryIndex(name: string, time: number) {
+            return _.findIndex(this.highscores, { 'name': name, 'time': time });
         }
         
     }

@@ -10,13 +10,19 @@ module app.highscore {
     export class HighscoreCtrl implements IHighscoreCtrl {
 
         highscores: Array<app.services.HighscoreEntry>;
+        highlightIndex = -1; 
 
         constructor(
             public $scope: ng.IScope,
             private highscoreService: app.services.IHighscoreService,
-            public timeService: app.services.ITimeService
+            public timeService: app.services.ITimeService,
+            private $stateParams: HighscoreStateParams
         ){
             this.highscores = highscoreService.highscores;
+
+            if ($stateParams.placement) {
+                this.highlightIndex = parseInt($stateParams.placement);
+            }
         }
     }
 
@@ -29,4 +35,8 @@ module app.highscore {
             controllerAs: 'vm'            
         })
         .controller("highscoreCtrl", HighscoreCtrl);
+
+    class HighscoreStateParams implements ng.ui.IStateParamsService {
+        placement: string;
+    }
 }

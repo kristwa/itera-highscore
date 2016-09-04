@@ -22,6 +22,9 @@ angular.module('iteraHighscoreApp', [
 
         .state("highscore", {
             url: "/highscore",
+            params: {
+                placement: null
+            },
             template: "<highscore></highscore>"
         })
 
