@@ -8,9 +8,10 @@ module app.services {
         results: Array<string>;
         isConnected: boolean;
 
-        registerHighScore(entry: HighscoreEntry, index: number): number;
         removeItem(index: number): void;
+        removeItemByResult(result: number): void;
         sendCommand(command: string): void;
+        sendHighscoreCommand(entry: HighscoreEntry): void;
     }
 
     
@@ -21,8 +22,7 @@ module app.services {
         
         constructor(
             private $websocket: angular.websocket.IWebSocket, 
-            private uuid4: any, 
-            private highscoreService: app.services.IHighscoreService,
+            private uuid4: any,
             private localStorageService: angular.local.storage.ILocalStorageService,
             private $timeout: angular.ITimeoutService,
             private toastr: any)
@@ -32,7 +32,7 @@ module app.services {
         }
 
         setupWebsocket() {
-            this.ws =  this.$websocket("ws://localhost:8080");  // this.$websocket("ws://192.168.1.2:8080"); //
+            this.ws = this.$websocket("ws://192.168.1.2:8080"); // this.$websocket("ws://localhost:8080");  // 
            
             this.ws.onOpen(() => {
                 this.toastr.success("Kontakt med websocket opprettet!");
@@ -61,26 +61,17 @@ module app.services {
                         this.results.push(op.finishedWithTime); 
                         this.localStorageService.set<Array<string>>("unregistered-scores", this.results);
                     } else if (op.highscore) {
-                        this.highscoreService.resyncLocalHighscore(op.highscore);
+                        // this.highscoreService.resyncLocalHighscore(op.highscore);
                     }
                 }
                 console.log(msg); 
             });
         }
 
-        registerHighScore(entry: HighscoreEntry, index: number) {
+        sendHighscoreCommand(entry: HighscoreEntry) {
             var object = new SocketHighscoreEntry();
             object.registerUser = JSON.stringify(entry);
-            console.log(this.uuid4.generate());
             this.ws.send(JSON.stringify(object));
-
-            // send to local storage
-            var placement = this.highscoreService.storeHighscoreEntry(entry);
-            
-            // remove item from array and restore in local storage, as it is now registered
-            this.removeItem(index);
-
-            return placement;
         }
 
         sendCommand(command: string): void {
@@ -95,19 +86,29 @@ module app.services {
             console.log("pulled index:" + index + ", new array: " + this.results);
         }
 
+        removeItemByResult(result: number): void {
+            _.pull(this.results, '' + result);
+            this.localStorageService.set<Array<string>>("unregistered-scores", this.results);
+            console.log("pulled result:" + result + ", new array: " + this.results);
+        }
+
     }
 
     export interface IHighscoreService {
         highscores: Array<HighscoreEntry>;
-        storeHighscoreEntry(entry: HighscoreEntry): number;
-        resyncLocalHighscore(entries: Array<HighscoreEntry>);
+        storeHighscoreEntry(entry: HighscoreEntry, index: number): number;
+        resyncLocalHighscore(entries: Array<HighscoreEntry>): void;
+        deleteHighscoreEntryByIndex(index: number): void;
     }
 
     export class HighscoreService implements IHighscoreService  {
         getExcited: string = "false";
         highscores: Array<HighscoreEntry>;
 
-        constructor(private localStorageService: angular.local.storage.ILocalStorageService){
+        constructor(
+            private localStorageService: angular.local.storage.ILocalStorageService,
+            private websocketService: IWebsocketService)
+        {
             this.fetchHighscores();
         }
 
@@ -116,11 +117,23 @@ module app.services {
             this.setHighscores();
         }
 
-        storeHighscoreEntry(entry: HighscoreEntry): number {
+        storeHighscoreEntry(entry: HighscoreEntry, index = -1): number {
             this.highscores.push(entry);
             this.highscores = this.sortEntries(this.highscores);
             this.setHighscores();
+
+            this.websocketService.sendHighscoreCommand(entry);
+
+            if (index > -1) {
+                this.websocketService.removeItem(index);
+            }
+            
             return this.findEntryIndex(entry.name, entry.time);
+        }
+
+        deleteHighscoreEntryByIndex(index: number): void {
+            _.pullAt(this.highscores, index);
+            this.setHighscores();
         }
 
         private fetchHighscores() {
@@ -150,7 +163,7 @@ module app.services {
 
     export interface ITimeService {
         getTimeForMilliseconds(milsec: string): string;
-        getMillisecondsFromSeconds(seconds: number)
+        getMillisecondsFromSeconds(seconds: number): void;
     }
 
     export class TimeService implements ITimeService {

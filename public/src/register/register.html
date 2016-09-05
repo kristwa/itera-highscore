@@ -14,7 +14,12 @@
             <label for="email">Din epostadresse</label>
             <input type="email" class="form-control" ng-model="vm.entry.email" id="email" placeholder="Epostadresse" required>
         </div>
-        <button type="submit" class="btn btn-danger">Registrer</button>
-        <a ui-sref="highscore" class="btn btn-link">Gå tilbake</a>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-danger">Registrer</button>
+                <a ui-sref="highscore" class="btn btn-link">Gå tilbake</a>
+                <a href="javascript:void(0)" ng-click="vm.deleteResult()" class="btn btn-link pull-right">Fjern resultat</a>
+            </div>
+        </div>        
     </form>
 </div>

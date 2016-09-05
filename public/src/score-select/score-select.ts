@@ -14,7 +14,7 @@ module app.scoreselect {
             public $scope: ng.IScope,
             private websocketService: app.services.IWebsocketService,
             private timeService: app.services.ITimeService,
-            private $state: ng.ui.IState
+            private $state: ng.ui.IStateService
         ){
             this.results = websocketService.results;
 

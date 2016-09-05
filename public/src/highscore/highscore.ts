@@ -15,6 +15,7 @@ module app.highscore {
         constructor(
             public $scope: ng.IScope,
             private highscoreService: app.services.IHighscoreService,
+            private websocketService: app.services.IWebsocketService,
             public timeService: app.services.ITimeService,
             private $stateParams: HighscoreStateParams
         ){

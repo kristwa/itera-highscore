@@ -13,15 +13,20 @@ module app.admin {
         pwd: string;
         pwdError = false;
         isAuthenticated = false;
+        showScores = false;
+
+        highscore: Array<app.services.HighscoreEntry>
         
         constructor(
             public $scope: ng.IScope,
-            private $state: ng.ui.IState,
+            private $state: ng.ui.IStateService,
             private websocketService: app.services.WebsocketService,
+            private highscoreService: app.services.IHighscoreService,
+            private timeService: app.services.ITimeService,
             private $window: ng.IWindowService,
             private toastr: any
         ){
-            
+            this.highscore = highscoreService.highscores;
         }
 
         auth() {
@@ -48,6 +53,18 @@ module app.admin {
                 console.log('Permission given: ', cmd);
                 this.sendCmd(cmd);
             }
+        }
+
+        showHighscore() {
+            this.showScores = !this.showScores;
+        }
+
+        deleteEntry(index: number): void {
+            this.highscoreService.deleteHighscoreEntryByIndex(index);
+        }
+
+        resendEntry(index: number): void {
+            this.websocketService.sendHighscoreCommand(this.highscore[index]);
         }
     }
 

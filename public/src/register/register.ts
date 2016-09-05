@@ -15,8 +15,9 @@ module app.register {
         constructor(
             public $scope: ng.IScope,
             private websocketService: app.services.IWebsocketService,
+            private highscoreService: app.services.IHighscoreService,
             private $stateParams: RegisterStateParams,
-            private $state: ng.ui.IState,
+            private $state: ng.ui.IStateService,
             public timeService: app.services.TimeService
         ){
             var entry = parseInt($stateParams.id);
@@ -37,8 +38,17 @@ module app.register {
 
             console.log("Form submitted");
             console.log(this.entry);
-            var placement = this.websocketService.registerHighScore(this.entry, parseInt(this.$stateParams.id));
+            var placement = this.highscoreService.storeHighscoreEntry(this.entry, parseInt(this.$stateParams.id));
             this.$state.go("highscore", {placement: placement});            
+        }
+
+        deleteResult() {
+            if (this.customEntryMode) {
+                this.$state.go("scoreselect");
+            } else {
+                this.websocketService.removeItemByResult(this.entry.time);
+                this.$state.go("scoreselect");
+            }
         }
     }
 

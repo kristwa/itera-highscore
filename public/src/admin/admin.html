@@ -17,9 +17,25 @@
     <div class="well well-lg">
         <p>Administrativt</p>
         <button class="btn btn-danger" ng-click="vm.goTo('winner')">Foreta trekning</button> 
-        <button class="btn btn-danger" ng-click="vm.confirm('getHighscore', 'Dette vil slette alle lokale resultatdata, og erstatte med innhold fra databasen.')">Erstatt lokal highscoreliste med liste fra DB</button>
+        <!--<button class="btn btn-danger" ng-click="vm.confirm('getHighscore', 'Dette vil slette alle lokale resultatdata, og erstatte med innhold fra databasen.')">Erstatt lokal highscoreliste med liste fra DB</button>-->
         <button class="btn btn-danger" ng-click="vm.confirm('truncate', 'Dette vil medføre at alle resultater lagret i databasen vil slettes.')">Tøm highscoreliste db</button>
+        <button class="btn btn-danger" ng-click="vm.showHighscore()">Administrer highscore</button>
     </div>
+    <table style="margin-top:20px;" class="table table-bordered" ng-if="vm.showScores">
+        <tr ng-repeat="entry in vm.highscore track by $index">
+            <td>
+                {{$index+1}}
+            </td>
+            <td>
+                <p>{{entry.name}}</p>
+                {{vm.timeService.getTimeForMilliseconds(entry.time)}}
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="btn btn-sm btn-danger" ng-click="vm.deleteEntry($index)">Slett fra highscore (lokal)</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-danger" ng-click="vm.resendEntry($index)">Send registrering pånytt</a>
+            </td>
+        </tr>
+    </table>
 </div>
 <div ng-show="!vm.isAuthenticated">
     <form ng-submit="vm.auth()">
