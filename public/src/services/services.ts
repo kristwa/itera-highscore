@@ -37,13 +37,13 @@ module app.services {
             this.ws = this.$websocket("ws://192.168.1.2:8080"); // this.$websocket("ws://localhost:8080");  // 
            
             this.ws.onOpen(() => {
-                this.toastr.success("Kontakt med websocket opprettet!");
+                this.toastr.success("Contact with websocket established");
                 this.isConnected = true;
                 console.log("connection opened")
             });
 
             this.ws.onClose(() => {
-                this.toastr.error("Kontakt med websocket lukket. Prøver å opprette ny tilkobling.");
+                this.toastr.error("Websocket connection closed, trying to reestablish contact.");
                 this.isConnected = false;
                 console.log("connection closed");
 

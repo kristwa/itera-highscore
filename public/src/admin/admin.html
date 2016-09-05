@@ -17,8 +17,8 @@
     <div class="well well-lg">
         <p>Highscore stuff</p>
         <button class="btn btn-danger" ng-click="vm.goTo('winner')">Pick winner</button> 
-        <button class="btn btn-danger" ng-click="vm.confirm('highscores', 'Dette vil slette alle lokale resultatdata, og erstatte med innhold fra databasen.')">Replace local highscore with DB highscore</button>
-        <button class="btn btn-danger" ng-click="vm.confirm('truncate', 'Dette vil medføre at alle resultater lagret i databasen vil slettes.')">Truncate highscorelist db</button>
+        <button class="btn btn-danger" ng-click="vm.confirm('highscores', 'This will delete all local results and replace with DB contents.')">Replace local highscore with DB highscore</button>
+        <button class="btn btn-danger" ng-click="vm.confirm('truncate', 'This will delete all results from database.')">Truncate highscorelist db</button>
         <button class="btn btn-danger" ng-click="vm.showHighscore()">Admin highscore</button>
     </div>
     <table style="margin-top:20px;" class="table table-bordered" ng-if="vm.showScores">
