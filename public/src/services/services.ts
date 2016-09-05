@@ -65,7 +65,7 @@ module app.services {
                         this.localStorageService.set<Array<string>>("unregistered-scores", this.results);
                     } else if (op.allHighscores) {
                         console.log(op.allHighscores);
-                        var highscores = <Array<HighscoreEntry>>op.allHighscore;
+                        var highscores = <Array<HighscoreEntry>>op.allHighscores;
                         this.localStorageService.set<Array<HighscoreEntry>>("highscores", highscores);
                         // this.highscoreService.resyncLocalHighscore(op.highscore);
                     }
