@@ -1,11 +1,11 @@
 <div ng-show="vm.isAuthenticated">
     <h2>Administrator</h2>
-    <p>Superhemmelige administratorfunksjoner</p>
+    <p>Supersecret admin features</p>
     <div class="well well-lg">
         <p>Robot</p>
         <button class="btn btn-danger" ng-click="vm.sendCmd('start')">Start motor</button>
-        <button class="btn btn-danger" ng-click="vm.sendCmd('stop')">Stopp motor</button>
-        <button class="btn btn-danger" ng-click="vm.sendCmd('calibrate')">Kalibrer</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('stop')">Stop motor</button>
+        <button class="btn btn-danger" ng-click="vm.sendCmd('calibrate')">Calibrate</button>
         <button class="btn btn-danger" ng-click="vm.sendCmd('shutdown-robot')">Shutdown robot</button>
 
     </div>
@@ -15,11 +15,11 @@
         <button class="btn btn-danger" ng-click="vm.sendCmd('shutdown')">Shutdown</button>
     </div>
     <div class="well well-lg">
-        <p>Administrativt</p>
-        <button class="btn btn-danger" ng-click="vm.goTo('winner')">Foreta trekning</button> 
-        <button class="btn btn-danger" ng-click="vm.confirm('highscores', 'Dette vil slette alle lokale resultatdata, og erstatte med innhold fra databasen.')">Erstatt lokal highscoreliste med liste fra DB</button>
-        <button class="btn btn-danger" ng-click="vm.confirm('truncate', 'Dette vil medføre at alle resultater lagret i databasen vil slettes.')">Tøm highscoreliste db</button>
-        <button class="btn btn-danger" ng-click="vm.showHighscore()">Administrer highscore</button>
+        <p>Highscore stuff</p>
+        <button class="btn btn-danger" ng-click="vm.goTo('winner')">Pick winner</button> 
+        <button class="btn btn-danger" ng-click="vm.confirm('highscores', 'Dette vil slette alle lokale resultatdata, og erstatte med innhold fra databasen.')">Replace local highscore with DB highscore</button>
+        <button class="btn btn-danger" ng-click="vm.confirm('truncate', 'Dette vil medføre at alle resultater lagret i databasen vil slettes.')">Truncate highscorelist db</button>
+        <button class="btn btn-danger" ng-click="vm.showHighscore()">Admin highscore</button>
     </div>
     <table style="margin-top:20px;" class="table table-bordered" ng-if="vm.showScores">
         <tr ng-repeat="entry in vm.highscore track by $index">
@@ -31,8 +31,8 @@
                 {{vm.timeService.getTimeForMilliseconds(entry.time)}}
             </td>
             <td>
-                <a href="javascript:void(0)" class="btn btn-sm btn-danger" ng-click="vm.deleteEntry($index)">Slett fra highscore (lokal)</a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-danger" ng-click="vm.resendEntry($index)">Send registrering pånytt</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-danger" ng-click="vm.deleteEntry($index)">Delete from highscorelist (lokal)</a>
+                <a href="javascript:void(0)" class="btn btn-sm btn-danger" ng-click="vm.resendEntry($index)">Resend websocket command</a>
             </td>
         </tr>
     </table>
@@ -40,10 +40,10 @@
 <div ng-show="!vm.isAuthenticated">
     <form ng-submit="vm.auth()">
         <div class="form-group">
-            <label>Passord</label>
+            <label>Password</label>
             <input type="password" class="form-control" ng-model="vm.pwd" />
         </div>
-        <button type="submit" class="btn btn-danger">Gå til administrasjonsside</button>
-        <span style="color:red" ng-if="vm.pwdError">Fy! Feil passord</span>
+        <button type="submit" class="btn btn-danger">Go to adminpage</button>
+        <span style="color:red" ng-if="vm.pwdError">You shall not pass! Pwd not correct</span>
     </form>
 </div>

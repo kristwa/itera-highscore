@@ -2,13 +2,13 @@
     
     <h2>Highscore</h2>
     
-    <a ui-sref="scoreselect" class="btn btn-danger">Registrer ny score</a>
+    <a ui-sref="scoreselect" class="btn btn-danger">Register new score</a>
     
     <table class="table table-striped" style="margin-top:30px;">
         <tr>
             <th>#</th>
-            <th>Navn</th>
-            <th>Tid</th>
+            <th>Name</th>
+            <th>Time</th>
         </tr>
         <tr ng-repeat="hs in vm.highscores track by $index">
             <td ng-class="($index == vm.highlightIndex) ? 'bold' : ''">{{$index+1}}</td>
