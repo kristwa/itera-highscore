@@ -38,7 +38,7 @@ module app.register {
 
             console.log("Form submitted");
             console.log(this.entry);
-            var placement = this.highscoreService.storeHighscoreEntry(this.entry, parseInt(this.$stateParams.id));
+            var placement = this.websocketService.registerHighScore(this.entry, parseInt(this.$stateParams.id));
             this.$state.go("highscore", {placement: placement});            
         }
 

@@ -11,6 +11,7 @@ module app.services {
         removeItem(index: number): void;
         removeItemByResult(result: number): void;
         sendCommand(command: string): void;
+        registerHighScore(entry: HighscoreEntry, index: number): number;
         sendHighscoreCommand(entry: HighscoreEntry): void;
     }
 
@@ -23,6 +24,7 @@ module app.services {
         constructor(
             private $websocket: angular.websocket.IWebSocket, 
             private uuid4: any,
+            private highscoreService: IHighscoreService,
             private localStorageService: angular.local.storage.ILocalStorageService,
             private $timeout: angular.ITimeoutService,
             private toastr: any)
@@ -58,20 +60,36 @@ module app.services {
                     var op = JSON.parse(msg.data);
 
                     if (op.finishedWithTime) {
+                        console.log(op.finishedWithTime);
                         this.results.push(op.finishedWithTime); 
                         this.localStorageService.set<Array<string>>("unregistered-scores", this.results);
-                    } else if (op.highscore) {
+                    } else if (op.allHighscores) {
+                        console.log(op.allHighscores);
+                        var highscores = <Array<HighscoreEntry>>op.allHighscore;
+                        this.localStorageService.set<Array<HighscoreEntry>>("highscores", highscores);
                         // this.highscoreService.resyncLocalHighscore(op.highscore);
                     }
                 }
                 console.log(msg); 
             });
         }
+        
+        registerHighScore(entry: HighscoreEntry, index: number) {
+            this.sendHighscoreCommand(entry);
+
+            // send to local storage
+            var placement = this.highscoreService.storeHighscoreEntry(entry);
+            
+            // remove item from array and restore in local storage, as it is now registered
+            this.removeItem(index);
+
+            return placement;
+        }
 
         sendHighscoreCommand(entry: HighscoreEntry) {
             var object = new SocketHighscoreEntry();
-            object.registerUser = JSON.stringify(entry);
-            this.ws.send(JSON.stringify(object));
+            object.registerUser = entry;
+            this.ws.send(object);
         }
 
         sendCommand(command: string): void {
@@ -96,7 +114,7 @@ module app.services {
 
     export interface IHighscoreService {
         highscores: Array<HighscoreEntry>;
-        storeHighscoreEntry(entry: HighscoreEntry, index: number): number;
+        storeHighscoreEntry(entry: HighscoreEntry): number;
         resyncLocalHighscore(entries: Array<HighscoreEntry>): void;
         deleteHighscoreEntryByIndex(index: number): void;
     }
@@ -106,8 +124,7 @@ module app.services {
         highscores: Array<HighscoreEntry>;
 
         constructor(
-            private localStorageService: angular.local.storage.ILocalStorageService,
-            private websocketService: IWebsocketService)
+            private localStorageService: angular.local.storage.ILocalStorageService)
         {
             this.fetchHighscores();
         }
@@ -117,17 +134,10 @@ module app.services {
             this.setHighscores();
         }
 
-        storeHighscoreEntry(entry: HighscoreEntry, index = -1): number {
+        storeHighscoreEntry(entry: HighscoreEntry): number {
             this.highscores.push(entry);
             this.highscores = this.sortEntries(this.highscores);
             this.setHighscores();
-
-            this.websocketService.sendHighscoreCommand(entry);
-
-            if (index > -1) {
-                this.websocketService.removeItem(index);
-            }
-            
             return this.findEntryIndex(entry.name, entry.time);
         }
 
@@ -192,7 +202,7 @@ module app.services {
     }
 
     export class SocketHighscoreEntry {
-        registerUser: string;
+        registerUser: HighscoreEntry;
     }
 
     export class StandardCommand {
