@@ -49,7 +49,7 @@ module app.admin {
         }
 
         confirm(cmd: string, warning: string) {
-            if (this.$window.confirm("Er du sikker på at du ønsker å utføre denne operasjonen? " + warning)) {
+            if (this.$window.confirm("Are you sure you wish to perform this operation? " + warning)) {
                 console.log('Permission given: ', cmd);
                 this.sendCmd(cmd);
             }
